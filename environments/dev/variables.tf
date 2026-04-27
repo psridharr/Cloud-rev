@@ -38,10 +38,3 @@ variable "key_name" {
   type = string
 }
 
-variable "allowed_ssh_cidrs" {
-  type = list(string)
-}
-
-variable "allowed_http_cidrs" {
-  type = list(string)
-}

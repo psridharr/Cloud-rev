@@ -1,22 +1,7 @@
-terraform {
-  required_version = ">= 1.3.0, < 2.0.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.67"
-    }
-  }
-}
-
 provider "aws" {
   region = var.aws_region
 }
 
-# NOTE:
-# - Terraform enforces `version` only for Registry or Git-based module sources.
-# - For local module sources, `version` is kept for enterprise structure
-#   consistency and future migration to Registry/Git modules.
 locals {
   common_tags = {
     Environment = "prod"
@@ -27,37 +12,37 @@ locals {
 }
 
 module "vpc" {
-  source  = "app.terraform.io/company-name/vpc/aws"
-  version = "1.0.0"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 4.0"
 
-  name_prefix          = "${var.project_name}-prod"
-  vpc_cidr             = var.vpc_cidr
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
-  azs                  = var.azs
-  tags                 = local.common_tags
+  name            = "${var.project_name}-prod-vpc"
+  cidr            = var.vpc_cidr
+  azs             = var.azs
+  public_subnets  = var.public_subnet_cidrs
+  private_subnets = var.private_subnet_cidrs
+  tags            = local.common_tags
 }
 
 module "ec2" {
-  source  = "app.terraform.io/company-name/ec2/aws"
-  version = "1.0.0"
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 4.0"
 
-  name_prefix        = "${var.project_name}-prod"
-  vpc_id             = module.vpc.vpc_id
-  subnet_id          = module.vpc.public_subnet_ids[0]
-  ami_id             = var.ami_id
-  instance_type      = var.instance_type
-  key_name           = var.key_name
-  allowed_ssh_cidrs  = var.allowed_ssh_cidrs
-  allowed_http_cidrs = var.allowed_http_cidrs
-  tags               = local.common_tags
+  name                   = "${var.project_name}-prod-app"
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  subnet_id              = module.vpc.public_subnets[0]
+  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  key_name               = var.key_name
+  tags                   = local.common_tags
 }
 
 module "s3" {
-  source  = "app.terraform.io/company-name/s3/aws"
-  version = "1.0.0"
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.0"
 
-  bucket_name        = "${var.project_name}-prod-app-artifacts-001"
-  versioning_enabled = true
-  tags               = local.common_tags
+  bucket = "${var.project_name}-prod-app-artifacts-001"
+  versioning = {
+    enabled = true
+  }
+  tags = local.common_tags
 }

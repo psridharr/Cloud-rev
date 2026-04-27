@@ -8,5 +8,3 @@ azs                  = ["us-east-1a", "us-east-1b"]
 ami_id               = "ami-0c02fb55956c7d316"
 instance_type        = "t3.small"
 key_name             = "acme-staging-key"
-allowed_ssh_cidrs    = ["10.20.0.0/16"]
-allowed_http_cidrs   = ["0.0.0.0/0"]
