@@ -1,4 +1,4 @@
-# Terraform Multi-Environment Infrastructure (Sample)
+# Terraform Multi-Environment Infrastructure (Sample infra )
 
 This repository is a small but realistic Terraform setup modeled after a company workflow:
 
