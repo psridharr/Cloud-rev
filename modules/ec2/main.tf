@@ -1,7 +1,3 @@
-locals {
-  module_version = "v1.0.0"
-}
-
 resource "aws_security_group" "this" {
   name        = "${var.name_prefix}-${var.security_group_name_suffix}"
   description = "Security group for EC2 instance"

@@ -1,7 +1,3 @@
-locals {
-  module_version = "v1.0.0"
-}
-
 resource "aws_vpc" "this" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = var.enable_dns_support

@@ -12,7 +12,3 @@ output "private_subnet_ids" {
   description = "Private subnet IDs"
   value       = aws_subnet.private[*].id
 }
-
-output "module_version" {
-  value = local.module_version
-}

@@ -14,10 +14,9 @@ provider "aws" {
 }
 
 # NOTE:
-# - Local module sources (for example "../../modules/vpc") do not support the
-#   `version` argument.
-# - The `version` argument is only supported when the module source is a
-#   Terraform Registry address, such as app.terraform.io/company-name/<module>/aws.
+# - Terraform enforces `version` only for Registry or Git-based module sources.
+# - For local module sources, `version` is kept for enterprise structure
+#   consistency and future migration to Registry/Git modules.
 locals {
   common_tags = {
     Environment = "prod"

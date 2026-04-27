@@ -1,7 +1,3 @@
-locals {
-  module_version = "v1.0.0"
-}
-
 resource "aws_s3_bucket" "this" {
   bucket = var.bucket_name
 
